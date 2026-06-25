@@ -26,8 +26,13 @@
         color: var(--ytm-primary-text);
         margin: 0;
         overflow-x: hidden;
-        padding-top: 72px;
+        padding-top: 0;
         padding-bottom: 96px;
+      }
+      @media (max-width: 768px) {
+        body {
+          padding-top: 72px;
+        }
       }
       ::-webkit-scrollbar {
         width: 8px;
@@ -54,7 +59,7 @@
       }
       @media (min-width: 769px) {
         .ytm-header {
-          left: var(--sidebar-width);
+          display: none !important;
         }
       }
       .app-container {
@@ -497,7 +502,7 @@
     <header class="ytm-header">
       <div class="container-fluid d-flex align-items-center justify-content-between h-100 px-4">
         <div class="d-flex align-items-center gap-2 d-md-none">
-          <h4 class="m-0 fw-bold">PHP<span class="fw-light">Music</span></h4>
+          <h4 class="m-0 fw-bold">PHP<span class="fw-light">Music Client</span></h4>
         </div>
         <button class="btn btn-link text-white d-md-none p-2 ms-auto" type="button" id="sidebar-toggle-btn">
           <i class="bi bi-sliders fs-5"></i>
@@ -509,7 +514,7 @@
       <aside class="sidebar">
         <!-- Desktop Sidebar Header/Branding -->
         <div class="d-none d-md-flex align-items-center gap-2 mb-4" style="height: 72px; margin-top: -1.25rem; margin-left: -1rem; margin-right: -1rem; padding: 0 1.25rem; border-bottom: 1px solid var(--ytm-border);">
-          <h4 class="m-0 fw-bold">PHP<span class="fw-light">Music</span></h4>
+          <h4 class="m-0 fw-bold">PHP<span class="fw-light">Music Client</span></h4>
         </div>
 
         <div class="mb-4">
@@ -522,7 +527,16 @@
               <select class="form-select form-select-sm" id="source-type">
                 <option value="all">All Tracks</option>
                 <option value="playlist">Playlist Feed</option>
+                <option value="artist">Artist Feed</option>
               </select>
+            </div>
+            <div class="mb-3 d-none" id="playlist-id-container">
+              <label for="playlist-id" class="form-label small text-secondary mb-1">Playlist ID</label>
+              <input type="text" class="form-control form-control-sm" id="playlist-id" placeholder="Playlist ID">
+            </div>
+            <div class="mb-3 d-none" id="artist-id-container">
+              <label for="artist-id" class="form-label small text-secondary mb-1">Artist ID / Name</label>
+              <input type="text" class="form-control form-control-sm" id="artist-id" placeholder="Artist ID or Name">
             </div>
             <div class="mb-3 d-none" id="playlist-id-container">
               <label for="playlist-id" class="form-label small text-secondary mb-1">Playlist ID</label>
@@ -657,6 +671,8 @@
       const sourceTypeSelect = document.getElementById('source-type');
       const playlistIdInput = document.getElementById('playlist-id');
       const playlistIdContainer = document.getElementById('playlist-id-container');
+      const artistIdInput = document.getElementById('artist-id');
+      const artistIdContainer = document.getElementById('artist-id-container');
       const sidebarStatus = document.getElementById('sidebar-status');
       const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
       const sidebar = document.querySelector('.sidebar');
@@ -733,10 +749,22 @@
         if (e.target.value === 'playlist') {
           playlistIdContainer.classList.remove('d-none');
           playlistIdInput.required = true;
+          artistIdContainer.classList.add('d-none');
+          artistIdInput.required = false;
+          artistIdInput.value = '';
+        } else if (e.target.value === 'artist') {
+          artistIdContainer.classList.remove('d-none');
+          artistIdInput.required = true;
+          playlistIdContainer.classList.add('d-none');
+          playlistIdInput.required = false;
+          playlistIdInput.value = '';
         } else {
           playlistIdContainer.classList.add('d-none');
           playlistIdInput.required = false;
           playlistIdInput.value = '';
+          artistIdContainer.classList.add('d-none');
+          artistIdInput.required = false;
+          artistIdInput.value = '';
         }
       });
 
@@ -752,6 +780,16 @@
         if (sourceTypeSelect.value === 'playlist') {
           const pId = encodeURIComponent(playlistIdInput.value.trim());
           url += `get_playlist_songs&public_id=${pId}&sort=manual_order&page=${page}`;
+        } else if (sourceTypeSelect.value === 'artist') {
+          const val = artistIdInput.value.trim();
+          if (/^\d+$/.test(val)) {
+            // For numeric IDs, send standard filter_user_id alongside share_type parameters for compatibility
+            const encodedVal = encodeURIComponent(val);
+            url += `get_songs&filter_user_id=${encodedVal}&share_type=artist&id=${encodedVal}&page=${page}`;
+          } else {
+            // For text names, send the standard artist query parameter
+            url += `get_songs&artist=${encodeURIComponent(val)}&page=${page}`;
+          }
         } else {
           url += `get_songs&sort=id_desc&page=${page}`;
         }
@@ -820,6 +858,11 @@
         currentBaseUrl = apiUrlInput.value.trim().replace(/\/$/, '');
         if (!currentBaseUrl) return;
         
+        localStorage.setItem('ytm_apiUrl', currentBaseUrl);
+        localStorage.setItem('ytm_sourceType', sourceTypeSelect.value);
+        localStorage.setItem('ytm_playlistId', playlistIdInput.value.trim());
+        localStorage.setItem('ytm_artistId', artistIdInput.value.trim());
+
         hasMoreSongs = true;
         fetchContent(false);
 
@@ -1145,6 +1188,33 @@
         sidebarToggleBtn.addEventListener('click', () => {
           sidebar.classList.toggle('show');
         });
+      }
+
+      // Restore configuration from localStorage
+      const savedApiUrl = localStorage.getItem('ytm_apiUrl');
+      const savedSourceType = localStorage.getItem('ytm_sourceType');
+      const savedPlaylistId = localStorage.getItem('ytm_playlistId');
+      const savedArtistId = localStorage.getItem('ytm_artistId');
+
+      if (savedApiUrl) {
+        apiUrlInput.value = savedApiUrl;
+        currentBaseUrl = savedApiUrl;
+      }
+      if (savedSourceType) {
+        sourceTypeSelect.value = savedSourceType;
+        sourceTypeSelect.dispatchEvent(new Event('change'));
+      }
+      if (savedPlaylistId) {
+        playlistIdInput.value = savedPlaylistId;
+      }
+      if (savedArtistId) {
+        artistIdInput.value = savedArtistId;
+      }
+
+      // Auto-connect if a backend URL was previously saved
+      if (currentBaseUrl) {
+        hasMoreSongs = true;
+        fetchContent(false);
       }
 
       if ('mediaSession' in navigator) {
