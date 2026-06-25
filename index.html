@@ -547,6 +547,9 @@
               <input type="url" class="form-control form-control-sm" id="api-url" placeholder="https://your-api.com" required>
             </div>
             <button type="submit" class="btn btn-light btn-sm w-100 fw-bold py-2">Connect</button>
+            <button type="button" id="btn-share" class="btn btn-outline-light btn-sm w-100 mt-2 py-2">
+              <i class="bi bi-share"></i> Share Page
+            </button>
           </form>
         </div>
         <div class="mt-auto p-2" style="border-top: 1px solid var(--ytm-border);">
@@ -668,6 +671,7 @@
     <script>
       const apiForm = document.getElementById('api-form');
       const apiUrlInput = document.getElementById('api-url');
+      const btnShare = document.getElementById('btn-share');
       const sourceTypeSelect = document.getElementById('source-type');
       const playlistIdInput = document.getElementById('playlist-id');
       const playlistIdContainer = document.getElementById('playlist-id-container');
@@ -1190,7 +1194,7 @@
         });
       }
 
-      // Restore configuration from localStorage
+      // Restore configuration from localStorage first
       const savedApiUrl = localStorage.getItem('ytm_apiUrl');
       const savedSourceType = localStorage.getItem('ytm_sourceType');
       const savedPlaylistId = localStorage.getItem('ytm_playlistId');
@@ -1211,10 +1215,84 @@
         artistIdInput.value = savedArtistId;
       }
 
-      // Auto-connect if a backend URL was previously saved
+      // Parse hash parameters if present (overrides localStorage values)
+      const parseHashParams = () => {
+        const hash = window.location.hash.substring(1);
+        if (!hash) return null;
+        const params = {};
+        const pairs = hash.split('&');
+        for (let pair of pairs) {
+          const [key, val] = pair.split('=');
+          if (key && val) {
+            params[decodeURIComponent(key)] = decodeURIComponent(val);
+          }
+        }
+        return params;
+      };
+
+      const hashParams = parseHashParams();
+      if (hashParams) {
+        const hashBackendUrl = hashParams['backendurl'];
+        const hashSourceType = hashParams['sourcetype'];
+        const hashIdName = hashParams['id/name'] || hashParams['id'] || hashParams['name'];
+
+        if (hashBackendUrl) {
+          apiUrlInput.value = hashBackendUrl;
+          currentBaseUrl = hashBackendUrl;
+          localStorage.setItem('ytm_apiUrl', hashBackendUrl);
+        }
+        if (hashSourceType) {
+          sourceTypeSelect.value = hashSourceType;
+          sourceTypeSelect.dispatchEvent(new Event('change'));
+          localStorage.setItem('ytm_sourceType', hashSourceType);
+        }
+        if (hashIdName) {
+          if (hashSourceType === 'playlist') {
+            playlistIdInput.value = hashIdName;
+            localStorage.setItem('ytm_playlistId', hashIdName);
+          } else if (hashSourceType === 'artist') {
+            artistIdInput.value = hashIdName;
+            localStorage.setItem('ytm_artistId', hashIdName);
+          }
+        }
+      }
+
+      // Auto-connect if a backend URL is now configured
       if (currentBaseUrl) {
         hasMoreSongs = true;
         fetchContent(false);
+      }
+
+      // Event listener for generating and copying the configuration hash URL
+      if (btnShare) {
+        btnShare.addEventListener('click', () => {
+          const backendUrl = apiUrlInput.value.trim();
+          const sourceType = sourceTypeSelect.value;
+          let idName = '';
+          if (sourceType === 'playlist') {
+            idName = playlistIdInput.value.trim();
+          } else if (sourceType === 'artist') {
+            idName = artistIdInput.value.trim();
+          }
+
+          const baseUrl = window.location.origin + window.location.pathname;
+          const hashParts = [];
+          if (sourceType) hashParts.push(`sourcetype=${encodeURIComponent(sourceType)}`);
+          if (idName) hashParts.push(`id/name=${encodeURIComponent(idName)}`);
+          if (backendUrl) hashParts.push(`backendurl=${encodeURIComponent(backendUrl)}`);
+
+          const shareUrl = `${baseUrl}#${hashParts.join('&')}`;
+
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            const originalText = btnShare.innerHTML;
+            btnShare.innerHTML = `<i class="bi bi-check-circle-fill"></i> Copied!`;
+            setTimeout(() => {
+              btnShare.innerHTML = originalText;
+            }, 2000);
+          }).catch((err) => {
+            console.error('Failed to copy share link: ', err);
+          });
+        });
       }
 
       if ('mediaSession' in navigator) {
