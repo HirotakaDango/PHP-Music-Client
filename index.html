@@ -911,6 +911,17 @@
         isRestoringTime = false;
         audioPlayer.src = `${currentBaseUrl}/?action=get_stream&id=${song.id}`;
         audioPlayer.play().catch(err => console.error("Playback restriction: ", err));
+
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title || 'Unknown Title',
+            artist: song.artist || 'Unknown Artist',
+            album: song.album || 'Unknown Album',
+            artwork: [
+              { src: coverSvg, sizes: '512x512', type: 'image/svg+xml' }
+            ]
+          });
+        }
       }
 
       audioPlayer.addEventListener('loadedmetadata', () => {
@@ -975,14 +986,23 @@
       audioPlayer.addEventListener('play', () => {
         playIcon.className = 'bi bi-pause-fill';
         modalPlayIcon.className = 'bi bi-pause-fill';
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing';
+        }
       });
       audioPlayer.addEventListener('pause', () => {
         playIcon.className = 'bi bi-play-fill';
         modalPlayIcon.className = 'bi bi-play-fill';
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'paused';
+        }
       });
       audioPlayer.addEventListener('emptied', () => {
         playIcon.className = 'bi bi-play-fill';
         modalPlayIcon.className = 'bi bi-play-fill';
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'none';
+        }
       });
       audioPlayer.addEventListener('ended', playNext);
 
@@ -1123,6 +1143,21 @@
       if (sidebarToggleBtn && sidebar) {
         sidebarToggleBtn.addEventListener('click', () => {
           sidebar.classList.toggle('show');
+        });
+      }
+
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', () => {
+          togglePlayPause();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+          togglePlayPause();
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          playPrev();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          playNext();
         });
       }
     </script>
