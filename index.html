@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
   <head>
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHPMusic Client</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzBhMGEwYSIvPjxwYXRoIGQ9Ik0wIDI0TDI0IDBWMjRIMFoiIGZpbGw9IiMxNDE0MTQiIGNsaXAtcGF0aD0iaW5zZXQoMHB4IHJvdW5kIDZweCkiLz48cGF0aCBkPSJNNCAxMFYxMyIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE2IDEwVjEzIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNyA3TDcgMTYiIHN0cm9rZT0iI2ZmMDA0NCIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMyA3TDEzIDE2IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTkgN0wxOSAxNiIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTEwIDRMMTAgMTkiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzBhMGEwYSIvPjxwYXRoIGQ9Ik0wIDI0TDI0IDBWMjRIMFoiIGZpbGw9IiMxNDE0MTQiIGNsaXAtcGF0aD0iaW5zZXQoMHB4IHJvdW5kIDZweCkiLz48cGF0aCBkPSJNNCAxMFYxMyIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE2IDEwVjEzIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNogN0xDIDE2IiBzdHJva2U9IiNmZjAwNDQiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTMgN0wxMyAxNiIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0JNTE5IDdMMTkgMTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMCA0TDEwIDE5IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -443,18 +442,14 @@
       .pb-modal-play-circle .bi {
         font-size: 2.8rem;
       }
-
-      /* Desktop view overrides when a song is loaded (player bar is visible) */
       @media (min-width: 769px) {
         .player-bar.visible {
-          z-index: 1250; /* Places player bar above sidebar (z-index 1200) */
+          z-index: 1250;
         }
-        /* Uses :has() to adjust bottom padding of the sidebar so bottom elements aren't cut off */
         body:has(.player-bar.visible) .sidebar {
           padding-bottom: calc(96px + 1.25rem);
         }
       }
-
       @media (max-width: 768px) {
         .sidebar {
           transform: translateX(-100%);
@@ -512,7 +507,6 @@
 
     <div class="app-container">
       <aside class="sidebar">
-        <!-- Desktop Sidebar Header/Branding -->
         <div class="d-none d-md-flex align-items-center gap-2 mb-4" style="height: 72px; margin-top: -1.25rem; margin-left: -1rem; margin-right: -1rem; padding: 0 1.25rem; border-bottom: 1px solid var(--ytm-border);">
           <h4 class="m-0 fw-bold">PHP<span class="fw-light">Music Client</span></h4>
         </div>
@@ -538,15 +532,12 @@
               <label for="artist-id" class="form-label small text-secondary mb-1">Artist ID / Name</label>
               <input type="text" class="form-control form-control-sm" id="artist-id" placeholder="Artist ID or Name">
             </div>
-            <div class="mb-3 d-none" id="playlist-id-container">
-              <label for="playlist-id" class="form-label small text-secondary mb-1">Playlist ID</label>
-              <input type="text" class="form-control form-control-sm" id="playlist-id" placeholder="Playlist ID">
-            </div>
             <div class="mb-3">
               <label for="api-url" class="form-label small text-secondary mb-1">Backend URL</label>
               <input type="url" class="form-control form-control-sm" id="api-url" placeholder="https://your-api.com" required>
             </div>
             <button type="submit" class="btn btn-light btn-sm w-100 fw-bold py-2">Connect</button>
+            <button type="button" id="btn-change-key" class="btn btn-outline-warning btn-sm w-100 mt-2 py-2">Change API Key</button>
             <button type="button" id="btn-share" class="btn btn-outline-light btn-sm w-100 mt-2 py-2">
               <i class="bi bi-share"></i> Share Page
             </button>
@@ -672,6 +663,7 @@
       const apiForm = document.getElementById('api-form');
       const apiUrlInput = document.getElementById('api-url');
       const btnShare = document.getElementById('btn-share');
+      const btnChangeKey = document.getElementById('btn-change-key');
       const sourceTypeSelect = document.getElementById('source-type');
       const playlistIdInput = document.getElementById('playlist-id');
       const playlistIdContainer = document.getElementById('playlist-id-container');
@@ -734,8 +726,19 @@
       let repeatState = 'off'; 
       let lastSavedTime = 0;
       let isRestoringTime = false;
+      let apiKey = localStorage.getItem('ytm_apiKey') || '';
 
       audioPlayer.volume = lastVolume;
+
+      const checkApiKey = () => {
+        if (!apiKey) {
+          const keyInput = prompt("Please enter your API Key (Admin Password):");
+          if (keyInput !== null) {
+            apiKey = keyInput.trim();
+            localStorage.setItem('ytm_apiKey', apiKey);
+          }
+        }
+      };
 
       const getSvgPlaceholder = (title) => {
         let hash = 0;
@@ -780,22 +783,23 @@
       };
 
       const getApiUrl = (page) => {
-        let url = `${currentBaseUrl}/?action=`;
+        let joiner = currentBaseUrl.includes('?') ? '&' : '/?';
+        let url = `${currentBaseUrl}${joiner}action=`;
+        const apiKeyStr = `&api_key=${encodeURIComponent(apiKey)}`;
+        
         if (sourceTypeSelect.value === 'playlist') {
           const pId = encodeURIComponent(playlistIdInput.value.trim());
-          url += `get_playlist_songs&public_id=${pId}&sort=manual_order&page=${page}`;
+          url += `get_playlist_songs&public_id=${pId}&sort=manual_order&page=${page}${apiKeyStr}`;
         } else if (sourceTypeSelect.value === 'artist') {
           const val = artistIdInput.value.trim();
           if (/^\d+$/.test(val)) {
-            // For numeric IDs, send standard filter_user_id alongside share_type parameters for compatibility
             const encodedVal = encodeURIComponent(val);
-            url += `get_songs&filter_user_id=${encodedVal}&share_type=artist&id=${encodedVal}&page=${page}`;
+            url += `get_songs&filter_user_id=${encodedVal}&share_type=artist&id=${encodedVal}&page=${page}${apiKeyStr}`;
           } else {
-            // For text names, send the standard artist query parameter
-            url += `get_songs&artist=${encodeURIComponent(val)}&page=${page}`;
+            url += `get_songs&artist=${encodeURIComponent(val)}&page=${page}${apiKeyStr}`;
           }
         } else {
-          url += `get_songs&sort=id_desc&page=${page}`;
+          url += `get_songs&sort=id_desc&page=${page}${apiKeyStr}`;
         }
         return url;
       };
@@ -817,6 +821,18 @@
 
         try {
           const response = await fetch(getApiUrl(currentPage));
+          
+          if (response.status === 401) {
+            localStorage.removeItem('ytm_apiKey');
+            apiKey = '';
+            sidebarStatus.innerHTML = `<i class="bi bi-x-circle-fill text-danger me-1"></i> Invalid API Key`;
+            alert("API Key was rejected (401 Unauthorized). Please check your password and enter it again.");
+            checkApiKey();
+            isFetching = false;
+            scrollSpinner.classList.add('d-none');
+            return;
+          }
+
           if (!response.ok) throw new Error("Connection failed");
           
           const newSongs = await response.json();
@@ -859,8 +875,21 @@
 
       apiForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        currentBaseUrl = apiUrlInput.value.trim().replace(/\/$/, '');
-        if (!currentBaseUrl) return;
+        checkApiKey();
+        if (!apiKey) {
+          alert("An API Key is required to establish a connection.");
+          return;
+        }
+
+        let rawUrl = apiUrlInput.value.trim().replace(/\/$/, '');
+        if (!rawUrl) return;
+        
+        if (!rawUrl.includes('access=api')) {
+          rawUrl += (rawUrl.includes('?') ? '&' : '/?') + 'access=api';
+        }
+        
+        currentBaseUrl = rawUrl;
+        apiUrlInput.value = currentBaseUrl;
         
         localStorage.setItem('ytm_apiUrl', currentBaseUrl);
         localStorage.setItem('ytm_sourceType', sourceTypeSelect.value);
@@ -874,6 +903,21 @@
           sidebar.classList.remove('show');
         }
       });
+
+      if (btnChangeKey) {
+        btnChangeKey.addEventListener('click', () => {
+          const newKey = prompt("Enter your new API Key (Admin Password):", apiKey);
+          if (newKey !== null) {
+            apiKey = newKey.trim();
+            localStorage.setItem('ytm_apiKey', apiKey);
+            sidebarStatus.innerHTML = `<i class="bi bi-check-circle-fill text-success me-1"></i> Key Updated`;
+            if (currentBaseUrl) {
+              hasMoreSongs = true;
+              fetchContent(false);
+            }
+          }
+        });
+      }
 
       const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && !isFetching && hasMoreSongs && currentBaseUrl !== '') {
@@ -957,7 +1001,8 @@
         
         lastSavedTime = 0;
         isRestoringTime = false;
-        audioPlayer.src = `${currentBaseUrl}/?action=get_stream&id=${song.id}`;
+        let joiner = currentBaseUrl.includes('?') ? '&' : '/?';
+        audioPlayer.src = `${currentBaseUrl}${joiner}action=get_stream&id=${song.id}&api_key=${encodeURIComponent(apiKey)}`;
         audioPlayer.play().catch(err => console.error("Playback restriction: ", err));
 
         if ('mediaSession' in navigator) {
@@ -984,7 +1029,8 @@
           if (!audioPlayer.src || audioPlayer.src === window.location.href || audioPlayer.src.endsWith('/')) {
             const song = songQueue[currentIndex];
             isRestoringTime = true;
-            audioPlayer.src = `${currentBaseUrl}/?action=get_stream&id=${song.id}`;
+            let joiner = currentBaseUrl.includes('?') ? '&' : '/?';
+            audioPlayer.src = `${currentBaseUrl}${joiner}action=get_stream&id=${song.id}&api_key=${encodeURIComponent(apiKey)}`;
           }
           audioPlayer.play();
         } else {
@@ -1194,7 +1240,6 @@
         });
       }
 
-      // Restore configuration from localStorage first
       const savedApiUrl = localStorage.getItem('ytm_apiUrl');
       const savedSourceType = localStorage.getItem('ytm_sourceType');
       const savedPlaylistId = localStorage.getItem('ytm_playlistId');
@@ -1215,7 +1260,6 @@
         artistIdInput.value = savedArtistId;
       }
 
-      // Parse hash parameters if present (overrides localStorage values)
       const parseHashParams = () => {
         const hash = window.location.hash.substring(1);
         if (!hash) return null;
@@ -1237,9 +1281,13 @@
         const hashIdName = hashParams['id/name'] || hashParams['id'] || hashParams['name'];
 
         if (hashBackendUrl) {
-          apiUrlInput.value = hashBackendUrl;
-          currentBaseUrl = hashBackendUrl;
-          localStorage.setItem('ytm_apiUrl', hashBackendUrl);
+          let rawUrl = hashBackendUrl.replace(/\/$/, '');
+          if (!rawUrl.includes('access=api')) {
+            rawUrl += (rawUrl.includes('?') ? '&' : '/?') + 'access=api';
+          }
+          apiUrlInput.value = rawUrl;
+          currentBaseUrl = rawUrl;
+          localStorage.setItem('ytm_apiUrl', rawUrl);
         }
         if (hashSourceType) {
           sourceTypeSelect.value = hashSourceType;
@@ -1257,13 +1305,14 @@
         }
       }
 
-      // Auto-connect if a backend URL is now configured
-      if (currentBaseUrl) {
+      // Check on startup
+      checkApiKey();
+
+      if (currentBaseUrl && apiKey) {
         hasMoreSongs = true;
         fetchContent(false);
       }
 
-      // Event listener for generating and copying the configuration hash URL
       if (btnShare) {
         btnShare.addEventListener('click', () => {
           const backendUrl = apiUrlInput.value.trim();
