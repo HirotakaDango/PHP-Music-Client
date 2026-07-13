@@ -2,26 +2,39 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
     <title>PHPMusic Playground</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PHPMusic">
     <meta property="og:title" content="PHPMusic Playground">
     <meta property="og:description" content="A lightweight client-side music player interface.">
     <meta property="og:type" content="music.playlist">
     <meta property="og:image" content="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d0bcff'><path d='M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z'/></svg>">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d0bcff'><path d='M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z'/></svg>">
-    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22short_name%22%3A%22PHPMusic%22%2C%22name%22%3A%22PHPMusic%20Playground%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27%23d0bcff%27%3E%3Cpath%20d%3D%27M12%203v10.55c-.59-.34-1.27-.55-2-.55-2.21%200-4%201.79-4%204s1.79%204%204%204%204-1.79%204-4V7h4V3h-6z%27%2F%3E%3C%2Fsvg%3E%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22sizes%22%3A%22192x192%20512x512%22%7D%5D%2C%22start_url%22%3A%22.%2Findex.html%22%2C%22background_color%22%3A%22%23121212%22%2C%22theme_color%22%3A%22%23121212%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%7D">
+    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22short_name%22%3A%22PHPMusic%22%2C%22name%22%3A%22PHPMusic%20Playground%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27%23d0bcff%27%3E%3Cpath%20d%3D%27M12%203v10.55c-.59-.34-1.27-.55-2-.55-2.21%200-4%201.79-4%204s1.79%204%204%204%204-1.79%204-4V7h4V3h-6z%27%2F%3E%3C%2Fsvg%3E%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22sizes%22%3A%22192x192%20512x512%22%7D%5D%2C%22start_url%22%3A%22.%2F%22%2C%22background_color%22%3A%22%23121212%22%2C%22theme_color%22%3A%22%23121212%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%7D">
     <style>
+      * {
+        box-sizing: border-box;
+      }
       html, body {
         margin: 0;
         padding: 0;
         background: #121212;
         color: #fff;
-        font-family: -apple-system, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         height: 100%;
-        width: 100%;
+        height: 100dvh;
+        width: 100vw;
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
       ::-webkit-scrollbar {
         width: 6px;
@@ -33,10 +46,29 @@
         background: #444;
         border-radius: 3px;
       }
+      #pm-header {
+        background: #000;
+        padding: 15px 15px 15px 15px;
+        padding-top: calc(12px + env(safe-area-inset-top));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 0 0 auto;
+        user-select: none;
+      }
+      #pm-player-container {
+        background: #000;
+        padding: 12px 15px calc(12px + env(safe-area-inset-bottom)) 15px;
+        border-top: 1px solid #222;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
     </style>
   </head>
   <body>
-    <div id="pm-header" style="background: #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; flex: 0 0 auto; user-select: none; box-sizing: border-box;">
+    <div id="pm-header">
       <strong style="font-size: 16px; margin: 0; color: #fff;">PHPMusic</strong>
       <div style="display: flex; align-items: center;">
         <span id="pm-gear" style="cursor: pointer; display: flex; align-items: center; color: #ccc; padding: 4px;" title="Settings">
@@ -66,7 +98,7 @@
       </div>
       <div id="pm-list" style="overflow-y: auto; flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;"></div>
     </div>
-    <div style="background: #000; padding: 12px 15px 24px 15px; border-top: 1px solid #222; flex: 0 0 auto; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px;">
+    <div id="pm-player-container">
       <div id="pm-track-title" style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; text-align: center;">Not playing</div>
       <div id="pm-progress-container" style="height: 6px; background: #333; border-radius: 3px; cursor: pointer; position: relative; margin-top: 6px;">
         <div id="pm-progress" style="height: 100%; width: 0%; background: #d0bcff; border-radius: 3px; pointer-events: none; transition: width 0.1s linear;"></div>
@@ -358,7 +390,7 @@
 
             self.addEventListener('fetch', (e) => {
               const url = new URL(e.request.url);
-              if (url.search.includes('api=')) {
+              if (url.search.includes('api_key=')) {
                 return;
               }
               e.respondWith(
