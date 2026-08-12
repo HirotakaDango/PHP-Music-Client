@@ -164,6 +164,7 @@
         gap: 12px;
         justify-self: center;
         transition: background-color 0.2s, box-shadow 0.2s;
+        min-width: 0; /* Ensures box shrinks on narrow devices */
       }
 
       .search-box:focus-within {
@@ -179,6 +180,7 @@
         color: var(--sys-color-on-surface);
         font-family: var(--font-main);
         font-size: 15px;
+        min-width: 0; /* Prevents flex blowout */
       }
 
       .search-input::placeholder {
@@ -216,16 +218,28 @@
 
       @media (max-width: 650px) {
         .top-app-bar {
-          grid-template-columns: auto 1fr auto;
+          display: flex; /* Flex is more robust for shrinking items seamlessly */
+          justify-content: space-between;
+          align-items: center;
           gap: 10px;
           padding-left: 12px;
           padding-right: 12px;
         }
-        .brand-title span:not(.brand-icon) {
+        .brand-title {
+          flex-shrink: 0;
+        }
+        .brand-title > span {
           display: none;
         }
+        .search-box {
+          flex: 1 1 auto;
+          max-width: 100%;
+          min-width: 0; /* Crucial: stops the search bar from overflowing */
+          margin: 0;
+        }
         #pm-gear {
-          margin-right: 8px;
+          flex-shrink: 0;
+          margin-right: 4px;
         }
       }
 
@@ -423,7 +437,6 @@
         gap: 24px;
       }
 
-      /* New row configuration for placing timeline and volume side by side */
       .dt-sliders-row {
         display: flex;
         align-items: flex-start;
@@ -585,14 +598,6 @@
         margin-left: -8px;
       }
 
-      .modal-title-header {
-        font-size: 14px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: var(--sys-color-on-surface-variant);
-      }
-
       .modal-art-container {
         width: 100%;
         max-width: 320px;
@@ -716,6 +721,7 @@
         font-size: 14px;
         outline: none;
         transition: border-color 0.2s;
+        min-width: 0;
       }
 
       .text-field:focus {
@@ -873,7 +879,6 @@
           </div>
 
           <div class="dt-controls-wrapper">
-            <!-- Timeline & Volume displayed side-by-side (row format) -->
             <div class="dt-sliders-row">
               <div class="seek-container" style="flex: 1; margin: 0;">
                 <div style="display: flex; align-items: center; height: 40px;">
@@ -941,10 +946,8 @@
           <span class="icon">skip_next</span>
         </button>
         <div class="mini-player-progress">
-          <div class="mini-player-bar" id="mini-progress-bar"></div>
-        </div>
+        <div class="mini-player-bar" id="mini-progress-bar"></div>
       </div>
-
     </div>
 
     <div class="player-modal" id="pm-modal">
@@ -952,8 +955,6 @@
         <button class="icon-button" id="modal-close" title="Minimize">
           <span class="icon">expand_more</span>
         </button>
-        <span class="modal-title-header">Now Playing</span>
-        <div style="width: 40px;"></div>
       </div>
 
       <div class="modal-art-container" id="modal-cover-wrap">
@@ -1127,7 +1128,6 @@
               dtVolIcon = $("dt-vol-icon"),
               dtVisCanvas = $("dt-vis-canvas");
 
-        // Audio Instance Setup
         if (!window.pmAudio) window.pmAudio = new Audio();
         const audio = window.pmAudio;
         audio.crossOrigin = "anonymous";
@@ -1139,7 +1139,6 @@
           try { localStorage.setItem(k, v); } catch (e) {}
         };
 
-        // Application State
         let masterSongList = [],
             filteredSongList = [],
             currentIndex = -1,
@@ -1194,10 +1193,8 @@
 
         const escapeHtml = t => t ? t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : "";
 
-        // Function to strip distracting IDs like "(id: 82)" from the artist name
         const formatArtist = artistStr => {
           if (!artistStr) return "Unknown Artist";
-          // Removes patterns matching (id:82), (id: 12), etc anywhere in the string.
           return artistStr.replace(/\s*\(\s*id:\s*\d+\s*\)/gi, '').trim();
         };
 
@@ -1417,7 +1414,6 @@
 
           const artistDisplay = formatArtist(song.artist);
 
-          // Sync track info across Mobile & Desktop views
           miniTitle.textContent = song.title || "Unknown";
           miniArtist.textContent = artistDisplay;
           
@@ -1756,5 +1752,5 @@
 
       })();
     </script>
-  </body>
+  <script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-referral-code="r1h5un0351j1" data-repl-id="438fc542-1f41-4c89-8e71-a01f72feb76c"></script></body>
 </html>
