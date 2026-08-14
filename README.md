@@ -1,6 +1,6 @@
 # PHPMusic Player
 
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/50bc78b1-09e3-4c5e-9429-5e7df281d336" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/1e63f692-d156-4910-a10d-3a1621984ed4" />
 
 A lightweight, modern, client-side web application interface for streaming music from a custom PHP backend API.
 
